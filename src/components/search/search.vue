@@ -1,6 +1,6 @@
 <template>
 	<div class="search-container">
-		<img class="logo m-r" src="../../assets/img/logo.png">
+		<img class="logo m-r m-l-xs" src="../../assets/img/logo.png">
 		<input class="search-input" placeholder="输入电影名称" />
 	</div>
 </template>
@@ -15,13 +15,17 @@
 	.search-container {
 		display: flex;
 		width: 100%;
+		margin: 30px 30px 0px 30px;
+		height: 150px;
 	}
 	.logo {
 		width: 8%;
-		height: 8%;
 	}
 	.m-r {
 		margin-right: 15px;
+	}
+	.m-l-xs {
+		margin-left: 30px;
 	}
 	.search-input {
 		flex: 1;
@@ -30,5 +34,6 @@
 		line-height: 15px;
 		border-width: 0px;
 		padding-left: 20px;
+		margin-right: 30px;
 	}
 </style>

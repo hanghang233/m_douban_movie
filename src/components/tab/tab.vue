@@ -46,7 +46,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
 	@import "../../common/stylus/variable.styl"
 	.tab-container {
-		
+		height: 200px;
 	}
 	.tab-ul {
 		display: flex;
@@ -60,7 +60,8 @@
 		align-items: center;
 		margin-top: 0px;
 		margin-bottom: 0px;
-		height: 200px
+		height: 200px;
+		background-color: #fff
 	}
 	.active {
 		color: #42bd56

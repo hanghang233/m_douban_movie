@@ -13,8 +13,10 @@ Router.prototype.openPage = function(link){
 Vue.use(Router)
 
 export default new Router({
-	routes: [
-		{
+	routes: [{
+			path: '/',
+			component: MovieList
+		},{
 			path: '/movie',
 			name: 'movie',
 			component: MovieList
