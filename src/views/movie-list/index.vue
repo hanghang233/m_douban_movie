@@ -11,7 +11,7 @@
 			<div v-if="nowIndexNav == 0" class="show-wapper" ref="showWrapper">
 				<ul class="movie-list-container">
 					<li v-for="item in showList">
-						<img :src="item.images.small" style="width: 90px;height: 130px" />
+						<img :src="getImages(item.images.small)" style="width: 90px;height: 130px" />
 						<div class="movie-info">
 							<p class="movie-title text-80">{{item.title}}</p>
 							<p class="movie-star text-60">{{item.rating.average}}</p>
@@ -20,6 +20,22 @@
 							<p class="collect_count text-60">{{item.collect_count}}人看过</p>
 						</div>
 					</li>
+					<li @click="loadMore()">加载更多</li>
+				</ul>
+			</div>
+			<div v-if="nowIndexNav == 1" class="comming-soon-wrapper" ref="commingSoonWrapper">
+				<ul class="movie-list-container">
+					<li v-for="item in commingSonnList">
+						<img :src="getImages(item.images.small)" style="width: 90px;height: 130px" />
+						<div class="movie-info">
+							<p class="movie-title text-80">{{item.title}}</p>
+							<p class="movie-star text-60">{{item.rating.average}}</p>
+							<p class="movie-director text-60">导演：{{item.directors.name}}</p>
+							<p class="movie-actors text-60">主演：<span v-for="actor in item.casts">{{actor.name}}/</span></p>
+							<p class="collect_count text-60">{{item.collect_count}}人看过</p>
+						</div>
+					</li>
+					<li @click="loadMore()">加载更多</li>
 				</ul>
 			</div>
 			<!-- <scroll v-if="nowIndexNav == 0" :data="showList" ref="showWrapper" :class="show-wapper" @scrollToEnd="loadMore">
@@ -91,6 +107,7 @@
 				}
 			},
 			getMovieList() {
+				var _this = this;
 				if(this.nowIndexNav == 0) {
 					var data = {
 						'start': this.showStartIndex,
@@ -98,7 +115,8 @@
 					}
 					//渲染正在上映的电影
 					movieListService.getMovieList(data).then(function(res){
-						_this.showList = _this.showList.contact(res.data.subjects);
+						console.log(res.data);
+						_this.showList = _this.showList.concat(res.subjects);
 					})
 				}else if(this.nowIndexNav == 1){
 					var data = {
@@ -107,7 +125,8 @@
 					}
 					//渲染即将上映的电影
 					movieListService.getCommingList(data).then(function(res){
-						_this.commingSonnList = _this.commingSonnList.contact(res.subjects);
+						console.log(res.data);
+						_this.commingSonnList = _this.commingSonnList.concat(res.subjects);
 					})
 				}
 			},
@@ -118,6 +137,12 @@
 					this.commingStartIndex = this.commingStartIndex + this.count;
 				}
 				this.getMovieList();
+			},
+			getImages(url) {
+				if(url){
+					let _u = url.substring( 7 );
+        			return 'https://images.weserv.nl/?url=' + _u;
+				}
 			}
 		},
 		components: {
