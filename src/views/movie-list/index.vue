@@ -9,35 +9,11 @@
 		</div>
 		<div class="movie-list-content">
 			<div v-if="nowIndexNav == 0" class="show-wapper" ref="showWrapper">
-				<ul class="movie-list-container">
-					<li v-for="item in showList">
-						<img :src="getImages(item.images.small)" style="width: 90px;height: 130px" />
-						<div class="movie-info">
-							<p class="movie-title text-80">{{item.title}}</p>
-							<p class="movie-star text-60">{{item.rating.average}}</p>
-							<p class="movie-director text-60">导演：{{item.directors.name}}</p>
-							<p class="movie-actors text-60">主演：<span v-for="actor in item.casts">{{actor.name}}/</span></p>
-							<p class="collect_count text-60">{{item.collect_count}}人看过</p>
-						</div>
-					</li>
-					<li @click="loadMore()">加载更多</li>
-				</ul>
+				<movieList :movie-list="showList" :has-more="hasShowMore"></movieList> 
 			</div>
-			<div v-if="nowIndexNav == 1" class="comming-soon-wrapper" ref="commingSoonWrapper">
-				<ul class="movie-list-container">
-					<li v-for="item in commingSonnList">
-						<img :src="getImages(item.images.small)" style="width: 90px;height: 130px" />
-						<div class="movie-info">
-							<p class="movie-title text-80">{{item.title}}</p>
-							<p class="movie-star text-60">{{item.rating.average}}</p>
-							<p class="movie-director text-60">导演：{{item.directors.name}}</p>
-							<p class="movie-actors text-60">主演：<span v-for="actor in item.casts">{{actor.name}}/</span></p>
-							<p class="collect_count text-60">{{item.collect_count}}人看过</p>
-						</div>
-					</li>
-					<li @click="loadMore()">加载更多</li>
-				</ul>
-			</div>
+			<div v-if="nowIndexNav == 1" class="show-wapper" ref="commingSoonWrapper">
+				<movieList :movie-list="commingSonnList" :has-more="hasCommingMore"></movieList>
+			</div>   
 			<!-- <scroll v-if="nowIndexNav == 0" :data="showList" ref="showWrapper" :class="show-wapper" @scrollToEnd="loadMore">
 				<ul class="movie-list-container">
 					<li v-for="item in showList">
@@ -65,7 +41,7 @@
 						</div>
 					</li>
 				</ul>
-			</scroll> -->
+			</scroll>  -->
 		</div>
 	</div>
 </template>
@@ -75,10 +51,22 @@
 	import BSscroll from 'better-scroll'
 	import movieListService from '@/service/movie-list.js' 
 	import scroll from '@/base/scroll/scroll.vue'
+	import loadMore from '@/base/loadMore/loadMore.vue'
+	import movieList from '@/views/movie-list/list.vue'
 
-	var wapper = document.querySelector('.wapper');
+	var options = {
+		scrollY: true,
+		pullDownRefresh: {
+			threshold: 10,
+			stop: 20
+		},
+		hasVerticalScroll: true,
+		click: true,
+		pullDownRefresh: false,
+		pullUpLoad: false
+	}
+
 	export default {
-		name: 'movieList',
 		data() {
 			return {
 				'nowIndexNav': 0,
@@ -86,27 +74,44 @@
 				'commingSonnList': [], //即将上映的电影
 				'showStartIndex': 0,
 				'commingStartIndex': 0,
-				'count': 10
+				'count': 10,
+				'hasShowMore': true,
+				'hasCommingMore': true,
+				'loadingDataFlag': false,
 			}
 		},
 		methods: {
 			changeMovieNav(index) {
 				this.nowIndexNav = index;
-				var _this = this;
 				this.getMovieList();
 			},
 			isNavActive(index) {
 				return this.nowIndexNav == index;
 			},
 			initScroll() {
-				if(this.nowIndex == 0){
-					//渲染正在上映的电影
-					this.showScroll = new BSscroll(this.$refs.showWrapper, {});
-				}else if(this.nowIndex == 1){
-					this.commingSoonScroll = new BSscroll(this.$refs.commingSoonWrapper, {});
+				if(!this.scroll) {
+					if(this.nowIndexNav == 0){
+						//渲染正在上映的电影
+						this.scroll = new BSscroll(this.$refs.showWrapper, options);
+					}else if(this.nowIndexNav == 1){
+						this.scroll = new BSscroll(this.$refs.commingSoonWrapper, options);
+					}
+				}else {
+					this.scroll.refresh();
 				}
+				var _this = this;
+				console.log(this.scroll);
+				this.scroll.on('scrollEnd', function(){
+					//快滚动到底部
+					if(_this.scroll.y <= _this.scroll.maxScrollY + 50){
+						if(!_this.loadingDataFlag){
+							_this.loadMore();
+						}
+					}
+				})
 			},
 			getMovieList() {
+				this.loadingDataFlag = true;
 				var _this = this;
 				if(this.nowIndexNav == 0) {
 					var data = {
@@ -115,8 +120,9 @@
 					}
 					//渲染正在上映的电影
 					movieListService.getMovieList(data).then(function(res){
-						console.log(res.data);
+						_this.loadingDataFlag = false;
 						_this.showList = _this.showList.concat(res.subjects);
+						_this.checkMore(res)
 					})
 				}else if(this.nowIndexNav == 1){
 					var data = {
@@ -125,29 +131,44 @@
 					}
 					//渲染即将上映的电影
 					movieListService.getCommingList(data).then(function(res){
-						console.log(res.data);
+						_this.loadingDataFlag = false;
 						_this.commingSonnList = _this.commingSonnList.concat(res.subjects);
+						_this.checkMore(res);
 					})
 				}
 			},
 			loadMore() {
-				if(this.nowIndexNav == 0){
+				if(this.nowIndexNav == 0 && this.hasShowMore){
 					this.showStartIndex = this.showStartIndex + this.count;
-				}else if(this.nowIndexNav == 1){
+					this.getMovieList();
+				}else if(this.nowIndexNav == 1 && this.hasCommingMore){
 					this.commingStartIndex = this.commingStartIndex + this.count;
+					this.getMovieList();
 				}
-				this.getMovieList();
+				
 			},
-			getImages(url) {
-				if(url){
-					let _u = url.substring( 7 );
-        			return 'https://images.weserv.nl/?url=' + _u;
+			checkMore(res) {
+				//判断正在热映电影是否更多
+				if(this.nowIndexNav == 0){
+					if(this.showStartIndex + this.count > res.total){
+						this.hasShowMore = false;
+					}
+				}else if(this.nowIndexNav == 1){
+					//判断即将上映电影是否更多
+					if(this.commingStartIndex + this.count > res.total){
+						this.hasCommingMore = false;
+					}
 				}
+				this.$nextTick(() => {
+                   this.initScroll();
+                })
 			}
 		},
 		components: {
 			search: search,
-			scroll: scroll
+			scroll: scroll,
+			loadMore: loadMore,
+			movieList: movieList
 		},
 		created() {
 			var _this = this;
@@ -157,10 +178,12 @@
 			}
 			movieListService.getMovieList(data).then(function(res){
 				_this.showList = res.subjects;
-				/*_this.$nextTick(function(){
-					_this.initScroll();
-				})*/
+				_this.$nextTick(() => {
+                   _this.initScroll();
+                })
 			})
+		},
+		watch: {
 		}
 	}
 </script>
@@ -215,7 +238,6 @@
 		margin-bottom: 30px;
 	}
 	.movie-list-header {
-		display: flex;
 		position: fixed;
 		background-color: #fff;
 		width: 100%;
@@ -223,10 +245,20 @@
 		flex-direction: column;
 		flex: 1;
 		height: 400px;
+		z-index: 9999
 	}
 	.movie-list-content {
-		flex: 1;
-		margin-top: 350px;
-		margin: 350px 40px 200px 40px;
+		margin: 400px 40px 500px 0px;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		display: flex;
+	}
+	.show-wapper {
+		position: relative;
+		overflow: hidden;
+		height: 100%;
+		padding: 0px 40px;
+		width: 100%;
 	}
 </style>

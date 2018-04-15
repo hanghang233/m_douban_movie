@@ -34,6 +34,6 @@
 		line-height: 15px;
 		border-width: 0px;
 		padding-left: 20px;
-		margin-right: 30px;
+		margin-right: 50px;
 	}
 </style>
