@@ -9,10 +9,10 @@
 		</div>
 		<div class="movie-list-content">
 			<div v-if="nowIndexNav == 0" class="show-wapper" ref="showWrapper">
-				<movieList :movie-list="showList" :has-more="hasShowMore"></movieList> 
+				<movieList :movie-list="showList" :needDate="needDate" :has-more="hasShowMore" :movie-type="nowIndexNav" ></movieList> 
 			</div>
 			<div v-if="nowIndexNav == 1" class="show-wapper" ref="commingSoonWrapper">
-				<movieList :movie-list="commingSonnList" :has-more="hasCommingMore"></movieList>
+				<movieList :movie-list="commingSonnList" :needDate="needDate" :has-more="hasCommingMore" :movie-type="nowIndexNav"></movieList>
 			</div>   
 			<!-- <scroll v-if="nowIndexNav == 0" :data="showList" ref="showWrapper" :class="show-wapper" @scrollToEnd="loadMore">
 				<ul class="movie-list-container">
@@ -53,6 +53,7 @@
 	import scroll from '@/base/scroll/scroll.vue'
 	import loadMore from '@/base/loadMore/loadMore.vue'
 	import movieList from '@/views/movie-list/list.vue'
+	import { createMovieList } from '@/common/util/movieList.js'
 
 	var options = {
 		scrollY: true,
@@ -69,7 +70,7 @@
 	export default {
 		data() {
 			return {
-				'nowIndexNav': 0,
+				'nowIndexNav': '0',
 				'showList': [], //正在上映的电影
 				'commingSonnList': [], //即将上映的电影
 				'showStartIndex': 0,
@@ -78,6 +79,7 @@
 				'hasShowMore': true,
 				'hasCommingMore': true,
 				'loadingDataFlag': false,
+				'needDate': true
 			}
 		},
 		methods: {
@@ -100,7 +102,6 @@
 					this.scroll.refresh();
 				}
 				var _this = this;
-				console.log(this.scroll);
 				this.scroll.on('scrollEnd', function(){
 					//快滚动到底部
 					if(_this.scroll.y <= _this.scroll.maxScrollY + 50){
@@ -121,7 +122,8 @@
 					//渲染正在上映的电影
 					movieListService.getMovieList(data).then(function(res){
 						_this.loadingDataFlag = false;
-						_this.showList = _this.showList.concat(res.subjects);
+						var movieList = createMovieList(res.subjects);
+						_this.showList = _this.showList.concat(movieList);
 						_this.checkMore(res)
 					})
 				}else if(this.nowIndexNav == 1){
@@ -132,7 +134,9 @@
 					//渲染即将上映的电影
 					movieListService.getCommingList(data).then(function(res){
 						_this.loadingDataFlag = false;
-						_this.commingSonnList = _this.commingSonnList.concat(res.subjects);
+						//组装即将上映的电影
+						var movieList = createMovieList(res.subjects);
+						_this.commingSonnList = _this.commingSonnList.concat(movieList);
 						_this.checkMore(res);
 					})
 				}
@@ -177,7 +181,7 @@
 				'count': _this.count
 			}
 			movieListService.getMovieList(data).then(function(res){
-				_this.showList = res.subjects;
+				_this.showList = createMovieList(res.subjects);
 				_this.$nextTick(() => {
                    _this.initScroll();
                 })
@@ -258,7 +262,6 @@
 		position: relative;
 		overflow: hidden;
 		height: 100%;
-		padding: 0px 40px;
 		width: 100%;
 	}
 </style>

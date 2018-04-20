@@ -1,15 +1,23 @@
 <template>
 	<div class="movie-list-content-container">
 		<ul class="movie-list-container">
-			<li v-for="item in movieList">
-				<img :src="getImages(item.images.small)" style="width: 90px;height: 130px" />
-				<div class="movie-info">
-					<p class="movie-title text-80">{{item.title}}</p>
-					<p class="movie-star text-60">{{item.rating.average}}</p>
-					<p class="movie-director text-60">导演：{{item.directors.name}}</p>
-					<p class="movie-actors text-60">主演：<span v-for="actor in item.casts">{{actor.name}}/</span></p>
-					<p class="collect_count text-60">{{item.collect_count}}人看过</p>
-				</div>  
+			<li v-for="(movie, index) in movieList">
+				<span class="movie-date" v-if="needDate && !dateEqual(index) && movieType == '1'">{{movie.date}}</span>
+				<div class="movie-info-continer">
+					<img :src="movie.image" style="width: 90px;height: 130px" />
+					<div class="movie-info">
+						<p class="movie-title text-80">{{movie.title}}</p>
+						<!-- <p class="movie-star text-60">{{movie.rating}}</p> -->
+						<star :star-total="movie.rating"></star>
+						<p class="movie-director text-60">导演：{{movie.director}}</p>
+						<p class="movie-actors text-60">主演：
+							<span v-for="(actor, index2) in movie.casts">{{actor.name}}
+								<span v-if="index2 != (movie.casts.length - 1)">/</span>
+							</span>
+						</p>
+						<p class="collect_count text-60" ng-if="movie.collectCount">{{movie.collectCount}}人看过</p>
+					</div>  
+				</div>
 			</li> 
 			<li><loadMore :has-more="hasMore"></loadMore></li>
 		</ul>
@@ -18,6 +26,7 @@
 
 <script>
 	import loadMore from '@/base/loadMore/loadMore.vue'
+	import star from '@/base/star/star.vue'
 	export default {
 		props: {
 			movieList: {
@@ -27,14 +36,23 @@
 			hasMore: {
 				type: Boolean,
 				default: true
+			},
+			needDate: {
+				type: Boolean,
+				default: false
+			},
+			movieType: {
+				type: String,
+				default: '0',
 			}
 		},
 		methods: {
-			getImages(url) {
-				if(url){
-					let _u = url.substring( 7 );
-        			return 'https://images.weserv.nl/?url=' + _u;
+			dateEqual(index) {
+				//划分日期分组
+				if(index === 0){
+					return false;
 				}
+				return this.movieList[index].date === this.movieList[index - 1].date
 			}
 		},
 		components: {
@@ -53,9 +71,20 @@
 		display: flex;
 		margin-bottom: 50px;
 		width: 100%;
+		flex-direction: column;
 	}
 	.movie-list-content-container {
 		position: relative;
 		overflow: hidden;
+	}
+	.movie-info-continer {
+		display: flex;
+		flex-direction: row;
+		padding: 0px 40px;
+	}
+	.movie-date {
+		background-color: #F8F8F8;
+		padding: 40px;
+		text-align: left;
 	}
 </style>
