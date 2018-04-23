@@ -20,5 +20,13 @@ export default {
 		}).catch(function(err){
 			console.log(err);
 		})
+	},
+	getMovieDetail(data){
+		var url = 'api/movie/subject/' + data.id;
+		return axios.get(url, {params: {apikey: apikey}}).then(function(res){
+			return Promise.resolve(res.data)
+		}).catch(function(err){
+			console.log(err);
+		})
 	}
 }

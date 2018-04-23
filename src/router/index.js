@@ -21,8 +21,8 @@ export default new Router({
 			name: 'movie',
 			component: MovieList
 		},{
-			path: '/detail/:id',
-			name: 'detail',
+			path: '/moviedetail/:id',
+			name: 'moviedetail',
 			component: MovieDetail
 		},{
 			path: '/mine',

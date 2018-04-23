@@ -9,10 +9,10 @@
 		</div>
 		<div class="movie-list-content">
 			<div v-if="nowIndexNav == 0" class="show-wapper" ref="showWrapper">
-				<movieList :movie-list="showList" :needDate="needDate" :has-more="hasShowMore" :movie-type="nowIndexNav" ></movieList> 
+				<movieList :movie-list="showList" :needDate="needDate" :has-more="hasShowMore" :movie-type="nowIndexNav" @selectMovie="selectMovie"></movieList> 
 			</div>
 			<div v-if="nowIndexNav == 1" class="show-wapper" ref="commingSoonWrapper">
-				<movieList :movie-list="commingSonnList" :needDate="needDate" :has-more="hasCommingMore" :movie-type="nowIndexNav"></movieList>
+				<movieList :movie-list="commingSonnList" :needDate="needDate" :has-more="hasCommingMore" :movie-type="nowIndexNav" @selectMovie="selectMovie"></movieList>
 			</div>   
 			<!-- <scroll v-if="nowIndexNav == 0" :data="showList" ref="showWrapper" :class="show-wapper" @scrollToEnd="loadMore">
 				<ul class="movie-list-container">
@@ -166,6 +166,12 @@
 				this.$nextTick(() => {
                    this.initScroll();
                 })
+			},
+			selectMovie(movie) {
+				this.$router.push({
+					name: 'moviedetail',
+					params: {id: movie.id}
+				})
 			}
 		},
 		components: {

@@ -1,14 +1,14 @@
 <template>
 	<div class="movie-list-content-container">
 		<ul class="movie-list-container">
-			<li v-for="(movie, index) in movieList">
+			<li v-for="(movie, index) in movieList" @click="selectMovie(movie)">
 				<span class="movie-date" v-if="needDate && !dateEqual(index) && movieType == '1'">{{movie.date}}</span>
 				<div class="movie-info-continer">
-					<img :src="movie.image" style="width: 90px;height: 130px" />
+					<img  v-lazy="movie.image" style="width: 90px;height: 130px" />
 					<div class="movie-info">
 						<p class="movie-title text-80">{{movie.title}}</p>
 						<!-- <p class="movie-star text-60">{{movie.rating}}</p> -->
-						<star :star-total="movie.rating"></star>
+						<star :star-total="movie.rating" :need-star="movieType == '0'"></star>
 						<p class="movie-director text-60">导演：{{movie.director}}</p>
 						<p class="movie-actors text-60">主演：
 							<span v-for="(actor, index2) in movie.casts">{{actor.name}}
@@ -53,10 +53,15 @@
 					return false;
 				}
 				return this.movieList[index].date === this.movieList[index - 1].date
+			},
+			//选择电影
+			selectMovie(movie) {
+				this.$emit('selectMovie', movie);
 			}
 		},
 		components: {
-			loadMore: loadMore
+			loadMore: loadMore,
+			star: star
 		}
 	}
 </script>
