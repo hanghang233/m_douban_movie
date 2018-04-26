@@ -1,7 +1,7 @@
 <template>
 	<div class="star" :class="starType">
 		<span v-for="item in starClasses" class="star-item" :class="item"></span>
-		<span>{{starTotal}}分</span>
+		<span v-if="needAverage">{{starTotal}}分</span>
 	</div>
 </template>
 
@@ -21,6 +21,10 @@
 				default: 24
 			},
 			needStar: {
+				type: Boolean,
+				default: true
+			},
+			needAverage: {
 				type: Boolean,
 				default: true
 			}
@@ -62,32 +66,34 @@
 		text-align: left;
 	}
 	.star-24 .star-item {
-		width: 70px;
-		height: 70px;
+		width: 50px;
+		height: 50px;
 		display: inline-block;
 		margin-right: 20px;
+		background-size: 50px 50px;
 	}
 	.star-24 .half {
-		background: url('star24_half@2x.png') no-repeat center;
+		background-image: url('star24_half@2x.png');
 	}
 	.star-24 .on {
-		background: url('star24_on@2x.png') no-repeat center;
+		background-image: url('star24_on@2x.png');
 	}
 	.star-24 .off {
-		background: url('star24_off@2x.png') no-repeat center;
+		background-image: url('star24_off@2x.png');
 	}
 	.star-36 .star-item {
 		width: 70px;
 		height: 70px;
 		display: inline-block;
+		background-size: 10px 10px;
 	}
 	.star-36 .half {
-		background: url('star36_on@2x.png') no-repeat center;
+		background-image: url('star36_on@2x.png');
 	}
 	.star-36 .on {
-		background: url('star36_on@2x.png') no-repeat center;
+		background-image: url('star36_on@2x.png');
 	}
 	.star-36 .off {
-		background: url('star36_off@2x.png') no-repeat center;
+		background-image: url('star36_off@2x.png');
 	}
 </style>
