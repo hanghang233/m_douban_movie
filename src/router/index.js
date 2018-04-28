@@ -5,6 +5,7 @@ import MovieList from '@/views/movie-list/index.vue'
 import MovieDetail from '@/views/movie-detail/index.vue'
 import Mine from '@/views/mine/index.vue'
 import Ranking from '@/views/ranking/index.vue'
+import reviewsAllList from '@/views/movie-detail/reviewsAllList.vue'
 
 Router.prototype.openPage = function(link){
 	this.push(link);
@@ -23,7 +24,11 @@ export default new Router({
 		},{
 			path: '/moviedetail/:id',
 			name: 'moviedetail',
-			component: MovieDetail
+			component: MovieDetail,
+			children: [{
+				path: 'reviews',
+				component: reviewsAllList
+			}]
 		},{
 			path: '/mine',
 			name: 'mine',

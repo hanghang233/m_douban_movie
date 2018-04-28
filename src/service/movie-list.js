@@ -12,7 +12,7 @@ export default {
 			console.log(err);
 		})
 	},
-	getCommingList(data){
+	getCommingList(data) {
 		var url = 'api/movie/coming_soon';
 		data.apikey = apikey;
 		return axios.get(url, { params: data}).then(function(res){
@@ -21,10 +21,23 @@ export default {
 			console.log(err);
 		})
 	},
-	getMovieDetail(data){
+	getMovieDetail(data) {
 		var url = 'api/movie/subject/' + data.id;
 		return axios.get(url, {params: {apikey: apikey}}).then(function(res){
 			return Promise.resolve(res.data)
+		}).catch(function(err){
+			console.log(err);
+		})
+	},
+	getShortParaList(data) {
+		var url = 'api/movie/subject/' + data.id + '/comments';
+		var params = {
+			'start': data.start,
+			'count': data.count,
+			'apikey': apikey
+		}
+		return axios.get(url, { params: params}).then(function(res){
+			return Promise.resolve(res.data);
 		}).catch(function(err){
 			console.log(err);
 		})

@@ -46,22 +46,32 @@
 						<p class="movie-summary-title">剧情简介</p>
 						<p class="m-t-none">{{movieDetail.summary}}</p>
 					</div>
-					<div class="movie-content4" style="margin-bottom:100px">
+					<div class="movie-content4" style="margin-bottom:200px">
 						<p class="movie-summary-title">影人</p>
-						<div class="m-t-none movie-actor-wrapper">
-							<div class="movie-actor-content">
-								<ul>
-									<li class="actor-item" v-for="actor in movieDetail.casts">
+						<div class="actor-wrapper" ref="actorWrapper">
+							<div class="movie-actor-content" ref="movieActorContent">
+								<ul class="actor-item-container">
+									<li class="actor-item" v-for="actor in movieDetail.actor_list" ref="actItem">
 										<img class="actor-image" :src="repelaceImage(actor.avatars.small)" v-if="actor.avatars" />
-										<p>{{actor.name}}}</p>
+										<p>{{actor.name}}</p>
 									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
+					<div class="base-line"></div>
+					<div class="movie-content5">
+						<ul class="movie-nav">
+							<li :class="{'movie-nav-active': isNavActive('0')}" @click="changeMovieNav('0')">短评</li>
+							<li :class="{'movie-nav-active': isNavActive('1')}" @click="changeMovieNav('1')">影评</li>
+						</ul>
+						<paraList @goReviewList="goReviewList()" :list="movieDetail.popular_comments" :movie-id="movieId" :count="movieDetail.comments_count" v-if="nowParaIndex == '0'"></paraList>
+						<reviewsList :list="movieDetail.popular_reviews" :movie-id="movieId" :count="movieDetail.collect_count" v-if="nowParaIndex == '1'"></reviewsList>
+					</div>
 				</div>
 			</div>
 		</scroll>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -70,9 +80,12 @@
 	import scroll from '@/base/scroll/scroll.vue'
 	import BSscroll from 'better-scroll'
 	import star from '@/base/star/star.vue'
+	import paraList from '@/views/movie-detail/paraList.vue'
+	import reviewsList from '@/views/movie-detail/reviewsList.vue'
 
 	var options = {
-		scrollY: true,
+		scrollY: false,
+		scrollX: true,
 		pullDownRefresh: {
 			threshold: 10,
 			stop: 20
@@ -88,6 +101,13 @@
 			return {
 				movieDetail: {},
 				movieId: '',
+				actorScroll: '',
+				nowParaIndex: 0,
+				count: 20,
+				shortParaStart: 0,
+				filmParaStart: 0,
+				shortParaList: [],
+				filmParaSList: []
 			}
 		},
 		methods: {
@@ -97,26 +117,66 @@
 					'id': this.movieId
 				}
 				movieListService.getMovieDetail(data).then(function(res){
-					_this.$nextTick(function(){
-						_this.movieDetail = res;
-						_this.movieDetail.repelace_image = _this.repelaceImage(res.images.small);
-					})
+					_this.movieDetail = res;
+					_this.movieDetail.repelace_image = _this.repelaceImage(res.images.small);
+					_this.movieDetail.actor_list = _this.movieDetail.directors.concat(_this.movieDetail.casts);
+					_this.initActorScroll();
 				})
 			},
 			repelaceImage(url) {
 				var _u = url.substring(7);
 				return 'https://images.weserv.nl/?url=' + _u;
 			},
+			initActorScroll() {
+				var width = 0;
+				this.$nextTick(function(){
+					for(var i=0;i<this.movieDetail.actor_list.length;i++){
+						width += parseInt(this.$refs.actItem[i].clientWidth + 20);
+					}
+					this.$refs.movieActorContent.style.width = width + 'px';
+					if(!this.actorScroll){
+						this.actorScroll = new BSscroll(this.$refs.actorWrapper, options);
+					}else{
+						this.actorScroll.refresh();
+					}
+				})
+			},
+			isNavActive(index) {
+				return this.nowParaIndex == index;
+			},
+			changeMovieNav(index) {
+				this.nowParaIndex = index;
+			},
+			getParaList() {
+				if(this.nowParaIndex == 0){
+					var data = {
+						'start': this.shortParaStart,
+						'count': this.count,
+						'id': this.movieId
+					}
+					var _this = this;
+					movieListService.getShortParaList(data).then(function(res){
+						_this.shortParaList = res.data;
+					})
+				}
+			},
+			goReviewList() {
+				console.log(123123);
+				this.$router.push({
+					path: `/moviedetail/${this.movieId}/reviews`
+				})
+			}
 		},
 		created() {
-			this.$nextTick(function(){
-				this.movieId = this.$router.history.current.params.id;
-				this.getMovieDetail();
-			})
+			this.movieId = this.$router.history.current.params.id;
+			this.getMovieDetail();
+			this.getParaList();
 		},
 		components: {
 			scroll: scroll,
-			star: star
+			star: star,
+			paraList: paraList,
+			reviewsList: reviewsList
 		}
 	}
 </script>
@@ -140,9 +200,11 @@
 	}
 	.detail-movie-title {
 		color: #fff;
-		margin: 50px 0px;
+		margin: 0px;
 		position: fixed;
 		width: 100%;
+		padding: 50px 20px;
+		background-color: #5555557d;
 	}
 	.movie-banner {
 		padding-top: 200px;
@@ -163,10 +225,12 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-		/* background-color: #555; */
+		background-color: #555; 
+	}
+	.movie-detail > div {
+		background-color: #fff;
 	}
 	.movie-content1 {
-		background-color: #fff;
 		display: flex;
 		justify-content: space-between;
 		padding: 80px 80px 0px 80px;
@@ -217,7 +281,6 @@
 	.movie-content2 {
 		display: flex;
 		padding: 60px 80px;
-		background-color: #fff;
 		align-content: space-between;
 	}
 	.movie-content2 button {
@@ -257,6 +320,46 @@
 		color: #555555c4;
 	}
 	.actor-image {
-		width: 600px;
+		width: 400px;
+	}
+	.movie-actor-content {
+		overflow: hidden;
+	}
+	.actor-item-container {
+		list-style-type: none;
+		padding-left: 0px;
+		display: flex;
+		overflow-x: scroll;
+		margin-top: 0px;
+	}
+	.actor-item-container li{
+		display: inline-block;
+		margin-right: 50px;
+	}
+	.actor-wrapper {
+		position: absolute;
+		overflow: hidden;
+		width: 100%;
+		margin-top: 200px;
+	}
+	.movie-nav {
+		display: inline-block;
+		list-style-type: none;
+		display: flex;
+		font-size: 70px;
+		padding: 0px;
+		margin: 0px;
+		width: 100%;
+	}
+	.movie-nav li {
+		flex: 1;
+		padding: 40px 0px;
+	}
+	.movie-nav-active {
+		border-bottom: 10px solid #42bd56;
+		color: #42bd56;
+	}
+	.movie-content5 {
+		margin-bottom: 250px;
 	}
 </style>
