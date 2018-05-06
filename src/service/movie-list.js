@@ -41,5 +41,19 @@ export default {
 		}).catch(function(err){
 			console.log(err);
 		})
+	},
+	searchList(data) {
+		var url = 'api/movie/search';
+		var params = {
+			'start': data.start,
+			'count': data.count,
+			'apikey': apikey,
+			'tag': data.tag
+		}
+		return axios.get(url, { params: params}).then(function(res){
+			return Promise.resolve(res.data);
+		}).catch(function(err){
+			console.log(err);
+		})
 	}
 }

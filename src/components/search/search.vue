@@ -1,5 +1,5 @@
 <template>
-	<div class="search-container">
+	<div class="search-container" @click="search()">
 		<img class="logo m-r m-l-xs" src="../../assets/img/logo.png">
 		<input class="search-input" placeholder="输入电影名称" />
 	</div>
@@ -7,7 +7,14 @@
 
 <script>
 	export default {
-		name: 'search'
+		name: 'search',
+		methods: {
+			search() {
+				this.$router.push({
+					'name': 'search'
+				})
+			}
+		}
 	}
 </script>
 
