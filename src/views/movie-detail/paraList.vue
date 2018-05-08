@@ -19,6 +19,7 @@
 					</div>
 				</div>
 			</li>
+			<li style="margin-bottom: 500px"><loadMore :has-more="hasMore"></loadMore></li>
 		</ul>
 		<div class="all-para-count" v-if="count" @click="goList()">全部短评{{count}}个</div>
 	</div>
@@ -26,6 +27,7 @@
 
 <script type="text/javascript">
 	import star from '@/base/star/star.vue'
+	import loadMore from '@/base/loadMore/loadMore.vue'
 	export default {
 		props: {
 			list: {
@@ -37,6 +39,10 @@
 			},
 			movieId: {
 				type: String
+			},
+			hasMore: {
+				type: Boolean,
+				default: false
 			}
 		},
 		methods: {
@@ -49,7 +55,8 @@
 			}
 		},
 		components: {
-			star: star
+			star: star,
+			loadMore: loadMore
 		}
 	}
 </script>

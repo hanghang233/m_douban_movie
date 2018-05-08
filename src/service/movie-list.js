@@ -29,7 +29,7 @@ export default {
 			console.log(err);
 		})
 	},
-	getShortParaList(data) {
+	getCommingList(data) {
 		var url = 'api/movie/subject/' + data.id + '/comments';
 		var params = {
 			'start': data.start,
@@ -41,5 +41,5 @@ export default {
 		}).catch(function(err){
 			console.log(err);
 		})
-	}
+	},
 }

@@ -71,7 +71,6 @@
 				</div>
 			</div>
 		</scroll>
-		<router-view></router-view>
 	</div>
 </template>
 
@@ -161,9 +160,9 @@
 				}
 			},
 			goReviewList() {
-				console.log(123123);
 				this.$router.push({
-					path: `/moviedetail/${this.movieId}/reviews`
+					name: 'commentlist',
+					params: {id: this.movieId}
 				})
 			}
 		},
