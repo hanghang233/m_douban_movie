@@ -5,7 +5,12 @@ import MovieList from '@/views/movie-list/index.vue'
 import MovieDetail from '@/views/movie-detail/index.vue'
 import Mine from '@/views/mine/index.vue'
 import Ranking from '@/views/ranking/index.vue'
+<<<<<<< HEAD
 import commentAllList from '@/views/movie-detail/commentAllList.vue'
+=======
+import reviewsAllList from '@/views/movie-detail/reviewsAllList.vue'
+import Search from '@/views/search/index.vue'
+>>>>>>> fad0c149577747a8a1f9529524889badb00561ba
 
 Router.prototype.openPage = function(link){
 	this.push(link);
@@ -37,6 +42,10 @@ export default new Router({
 			path: '/moviedetail/comment/:id',
 			name: 'commentlist',
 			component: commentAllList
+		}{
+			path: '/search',
+			name: 'search',
+			component: Search
 		}
 	]
 })

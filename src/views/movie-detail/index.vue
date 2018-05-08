@@ -2,7 +2,7 @@
 	<div class="detail-wrapper">
 		<div class="movie-image-container">
 			<div class="detail-movie-title">
-				<i class="icon-back">返回</i>
+				<i class="icon-back" @click="back()">返回</i>
 				<span>电影</span>
 			</div>
 		</div>
@@ -164,6 +164,9 @@
 					name: 'commentlist',
 					params: {id: this.movieId}
 				})
+			},
+			back() {
+				this.$router.go(-1);
 			}
 		},
 		created() {
