@@ -19,7 +19,6 @@
 					</div>
 				</div>
 			</li>
-			<li style="margin-bottom: 500px"><loadMore :has-more="hasMore"></loadMore></li>
 		</ul>
 		<div class="all-para-count" v-if="count" @click="goList()">全部短评{{count}}个</div>
 	</div>

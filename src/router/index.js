@@ -39,7 +39,7 @@ export default new Router({
 			path: '/moviedetail/comment/:id',
 			name: 'commentlist',
 			component: commentAllList
-		}{
+		},{
 			path: '/search',
 			name: 'search',
 			component: Search

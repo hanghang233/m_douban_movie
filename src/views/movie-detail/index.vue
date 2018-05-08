@@ -154,7 +154,7 @@
 						'id': this.movieId
 					}
 					var _this = this;
-					movieListService.getShortParaList(data).then(function(res){
+					movieListService.getCommingList(data).then(function(res){
 						_this.shortParaList = res.data;
 					})
 				}

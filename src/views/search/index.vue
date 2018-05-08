@@ -8,7 +8,14 @@
 				</div>
 				<ul class="search-list-container">
 					<li v-for="item in movieList">
-						<img src="getPic(item.images.small)" />
+						<img class="search-img" :src="getPic(item.images.small)" />
+						<div class="search-item">
+							<p class="m-t-none">{{item.title}}</p>
+							<p>
+								<span v-if="item.rating">{{item.rating.average}} /</span>
+								<span v-if="item.pubdates">{{item.pubdates[item.pubdates.length - 1]}}</span>
+							</p>
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -44,7 +51,12 @@
 				})
 			},
 			getPic(url) {
-				
+				if(url) {
+					var _u = url.substring(7);
+					return 'https://images.weserv.nl/?url=' + _u;
+				}else {
+					return '';
+				}
 			}
 		},
 		components: {
@@ -71,5 +83,23 @@
 	}
 	.search-list-container {
 		list-style-type: none;
+		padding: 1rem;
+		margin-top: 0px;
+	}
+	.search-list-container li {
+		display: flex;
+		align-items: center;
+		margin-bottom: 0.5rem;
+	}
+	.search-img {
+		width: 4rem;
+	}
+	.search-item {
+		text-align: left;
+		font-size: 1rem;
+		margin: 0 0.5rem;
+	}
+	.m-t-none {
+		margin-top: 0px;
 	}
 </style>
