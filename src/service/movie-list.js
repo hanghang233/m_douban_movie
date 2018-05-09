@@ -29,7 +29,7 @@ export default {
 			console.log(err);
 		})
 	},
-	getCommingList(data) {
+	getCommentsList(data) {
 		var url = 'api/movie/subject/' + data.id + '/comments';
 		var params = {
 			'start': data.start,

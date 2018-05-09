@@ -7,42 +7,12 @@
 				<li :class="{'movie-nav-active': isNavActive('1')}" @click="changeMovieNav('1')">即将上映</li>
 			</ul>
 		</div>
-		<div class="movie-list-content">
-			<div v-if="nowIndexNav == 0" class="show-wapper" ref="showWrapper">
-				<movieList :movie-list="showList" :needDate="needDate" :has-more="hasShowMore" :movie-type="nowIndexNav" @selectMovie="selectMovie"></movieList> 
-			</div>
-			<div v-if="nowIndexNav == 1" class="show-wapper" ref="commingSoonWrapper">
-				<movieList :movie-list="commingSonnList" :needDate="needDate" :has-more="hasCommingMore" :movie-type="nowIndexNav" @selectMovie="selectMovie"></movieList>
-			</div>   
-			<!-- <scroll v-if="nowIndexNav == 0" :data="showList" ref="showWrapper" :class="show-wapper" @scrollToEnd="loadMore">
-				<ul class="movie-list-container">
-					<li v-for="item in showList">
-						<img :src="item.images.small" style="width: 90px;height: 130px" />
-						<div class="movie-info">
-							<p class="movie-title text-80">{{item.title}}</p>
-							<p class="movie-star text-60">{{item.rating.average}}</p>
-							<p class="movie-director text-60">导演：{{item.directors.name}}</p>
-							<p class="movie-actors text-60">主演：<span v-for="actor in item.casts">{{actor.name}}/</span></p>
-							<p class="collect_count text-60">{{item.collect_count}}人看过</p>
-						</div>
-					</li>
-				</ul>
-			</scroll>
-			<scroll v-if="nowIndexNav == 1" :data="commingSonnList" ref="commingSoonWrapper" :class="comming-soon-wrapper" @scrollToEnd="loadMore">
-				<ul class="movie-list-container">
-					<li v-for="item in commingSonnList">
-						<img :src="item.images.small" style="width: 90px;height: 130px" />
-						<div class="movie-info">
-							<p class="movie-title text-80">{{item.title}}</p>
-							<p class="movie-star text-60">{{item.rating.average}}</p>
-							<p class="movie-director text-60">导演：{{item.directors.name}}</p>
-							<p class="movie-actors text-60">主演：<span v-for="actor in item.casts">{{actor.name}}/</span></p>
-							<p class="collect_count text-60">{{item.collect_count}}人看过</p>
-						</div>
-					</li>
-				</ul>
-			</scroll>  -->
+		<div v-if="nowIndexNav == 0" class="show-wapper" ref="showWrapper">
+			<movieList :movie-list="showList" :needDate="needDate" :has-more="hasShowMore" :movie-type="nowIndexNav" @selectMovie="selectMovie"></movieList> 
 		</div>
+		<div v-if="nowIndexNav == 1" class="show-wapper" ref="commingSoonWrapper">
+			<movieList :movie-list="commingSonnList" :needDate="needDate" :has-more="hasCommingMore" :movie-type="nowIndexNav" @selectMovie="selectMovie"></movieList>
+		</div>   
 	</div>
 </template>
 
@@ -224,6 +194,7 @@
 	.movie-list-container {
 		list-style-type: none;
 		padding-left: 0px;
+		margin-top: 6rem;
 	}
 	.movie-list-container li{
 		display: flex;
@@ -265,8 +236,7 @@
 		display: flex;
 	}
 	.show-wapper {
-		position: relative;
-		overflow: hidden;
+		position: absolute;
 		height: 100%;
 		width: 100%;
 	}

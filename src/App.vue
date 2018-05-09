@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<keep-alive>
+		<keep-alive exclude="search">
 			<router-view/>
 		</keep-alive>
 		<tab></tab>
