@@ -12,13 +12,18 @@ import Search from '@/views/search/index.vue'
 Router.prototype.openPage = function(link){
 	this.push(link);
 }
+
+Router.prototype.goBack = function(){
+	this.isBack = true;
+	window.history.back();
+}
  
 Vue.use(Router)
 
 export default new Router({
 	routes: [{
 			path: '/',
-			component: MovieList
+			component: MovieList,
 		},{
 			path: '/movie',
 			name: 'movie',

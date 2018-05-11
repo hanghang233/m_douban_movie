@@ -21,6 +21,7 @@
 			</li> 
 			<li><loadMore :has-more="hasMore"></loadMore></li>
 		</ul>
+		<router-view></router-view>
 	</div>
 </template>
 
