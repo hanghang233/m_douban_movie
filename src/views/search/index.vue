@@ -44,7 +44,7 @@
 				})
 			},
 			getPic(url) {
-				
+				var _u = 
 			}
 		},
 		components: {
