@@ -26,6 +26,7 @@
 
 <script type="text/javascript">
 	import star from '@/base/star/star.vue'
+	import loadMore from '@/base/loadMore/loadMore.vue'
 	export default {
 		props: {
 			list: {
@@ -37,6 +38,10 @@
 			},
 			movieId: {
 				type: String
+			},
+			hasMore: {
+				type: Boolean,
+				default: false
 			}
 		},
 		methods: {
@@ -49,7 +54,8 @@
 			}
 		},
 		components: {
-			star: star
+			star: star,
+			loadMore: loadMore
 		}
 	}
 </script>

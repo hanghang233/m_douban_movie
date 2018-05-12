@@ -71,7 +71,6 @@
 				</div>
 			</div>
 		</scroll>
-		<router-view></router-view>
 	</div>
 </template>
 
@@ -155,14 +154,15 @@
 						'id': this.movieId
 					}
 					var _this = this;
-					movieListService.getShortParaList(data).then(function(res){
+					movieListService.getCommingList(data).then(function(res){
 						_this.shortParaList = res.data;
 					})
 				}
 			},
 			goReviewList() {
 				this.$router.push({
-					path: `/moviedetail/${this.movieId}/reviews`
+					name: 'commentlist',
+					params: {id: this.movieId}
 				})
 			},
 			back() {

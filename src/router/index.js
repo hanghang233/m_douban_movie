@@ -5,11 +5,17 @@ import MovieList from '@/views/movie-list/index.vue'
 import MovieDetail from '@/views/movie-detail/index.vue'
 import Mine from '@/views/mine/index.vue'
 import Ranking from '@/views/ranking/index.vue'
+import commentAllList from '@/views/movie-detail/commentAllList.vue'
 import reviewsAllList from '@/views/movie-detail/reviewsAllList.vue'
 import Search from '@/views/search/index.vue'
 
 Router.prototype.openPage = function(link){
 	this.push(link);
+}
+
+Router.prototype.goBack = function(){
+	this.isBack = true;
+	window.history.back();
 }
  
 Vue.use(Router)
@@ -17,7 +23,7 @@ Vue.use(Router)
 export default new Router({
 	routes: [{
 			path: '/',
-			component: MovieList
+			component: MovieList,
 		},{
 			path: '/movie',
 			name: 'movie',
@@ -26,10 +32,6 @@ export default new Router({
 			path: '/moviedetail/:id',
 			name: 'moviedetail',
 			component: MovieDetail,
-			children: [{
-				path: 'reviews',
-				component: reviewsAllList
-			}]
 		},{
 			path: '/mine',
 			name: 'mine',
@@ -38,6 +40,10 @@ export default new Router({
 			path: '/ranking',
 			name: 'ranking',
 			component: Ranking
+		},{
+			path: '/moviedetail/comment/:id',
+			name: 'commentlist',
+			component: commentAllList
 		},{
 			path: '/search',
 			name: 'search',

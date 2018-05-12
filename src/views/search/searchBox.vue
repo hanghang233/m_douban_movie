@@ -2,7 +2,7 @@
 	<div>
 		<div class="box-container">
 			<input class="seach-input" placeholder="搜索电影/影人" />
-			<span class="cancel">取消</span>
+			<span class="cancel" @click="cancel()">取消</span>
 		</div>
 		<div class="tag-container" @click="search($event)">
 			<div class="tags">
@@ -38,6 +38,9 @@
 			search(event) {
 				var tag = $(event.target).text();
 				this.$emit('searchMovie', tag);
+			},
+			cancel() {
+				this.$router.back();
 			}
 		}
 	}
