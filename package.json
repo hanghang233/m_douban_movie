@@ -17,6 +17,8 @@
     "axios": "^0.18.0",
     "better-scroll": "^1.9.1",
     "jquery": "^2.2.4",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
     "lib-flexible": "^0.3.2",
     "px2rem-loader": "^0.1.9",
     "stylus": "^0.54.5",
