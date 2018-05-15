@@ -10,6 +10,7 @@ export default {
 			'apikey': apikey,
 			'start': data.start,
 			'count': data.count
+
 		}
 		return axios.get(url, { params: params}).then(function(res){
 			return Promise.resolve(res.data);
@@ -17,5 +18,43 @@ export default {
 			console.log(err);
 		})
 	},
-	
+	getWeekList(data) {
+		var url = "api/movie/weekly";
+		var params = {
+			'apikey': apikey,
+			'start': data.start,
+			'count': data.count
+		}
+		return axios.get(url, { params: params}).then(function(res){
+			return Promise.resolve(res.data);
+		}).catch(function(err){
+			console.log(err);
+		})
+	},
+	getCommingSonnList(data) {
+		var url = "api/movie/new_movies";
+		var params = {
+			'apikey': apikey,
+			'start': data.start,
+			'count': data.count
+		}
+		return axios.get(url, { params: params}).then(function(res){
+			return Promise.resolve(res.data);
+		}).catch(function(err){
+			console.log(err);
+		})
+	},
+	getBookingList(data) {
+		var url = "api/movie/us_box";
+		var params = {
+			'apikey': apikey,
+			'start': data.start,
+			'count': data.count
+		}
+		return axios.get(url, { params: params}).then(function(res){
+			return Promise.resolve(res.data);
+		}).catch(function(err){
+			console.log(err);
+		})
+	},
 }

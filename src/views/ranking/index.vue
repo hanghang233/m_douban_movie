@@ -7,20 +7,28 @@
 					<p class="text-lx ">豆瓣TOP250</p>
 					<p class="text-xs">8分以上好电影</p>
 				</div>
-				<ul class="rank-image">
-					<li v-for="(item, index) in topList" :class="'image-item' + index" >
-						<img :class="'rank-image-item' + index" v-if="item.images" :src="getImage(item.images.small)" />
-					</li>
-				</ul>
+				<swiper :list="topList"></swiper>
 			</div>
 			<div class="rank-item2">
-				
+				<div class="rank-title">
+					<p class="text-lx ">本周口碑榜</p>
+					<p class="text-xs">5月14号-5月20号</p>
+				</div>
+				<swiper :list="weekList"></swiper>
 			</div>
 			<div class="rank-item3">
-				
+				<div class="rank-title">
+					<p class="text-lx ">新片榜</p>
+					<p class="text-xs">5月14号-5月20号</p>
+				</div>
+				<swiper :list="commingSoonList"></swiper>
 			</div>
 			<div class="rank-item4">
-				
+				<div class="rank-title">
+					<p class="text-lx ">北美票房榜</p>
+					<p class="text-xs">票房最高排名</p>
+				</div>
+				<swiper :list="bookingOfficeList"></swiper>
 			</div>
 		</div>
 	</div>
@@ -28,12 +36,16 @@
 
 <script>
 	import movieRakingService from '@/service/movie-ranking.js'
+	import swiper from '@/views/ranking/swiper.vue'
 	export default {
 		data() {
 			return {
 				topList: [],
 				start: 0,
-				count: 3
+				count: 3,
+				weekList: [],
+				commingSoonList: [],
+				bookingOfficeList: []
 			}
 		},
 		methods: {
@@ -47,13 +59,51 @@
 					_this.topList = res.subjects;
 				})
 			},
-			getImage(url) {
-				var _u = url.substring(7);
-				return 'https://images.weserv.nl/?url=' + _u;
-			}
+			getWeekly() {
+				var data = {
+					'start': this.start,
+					'count': this.count
+				}
+				var _this = this;
+				movieRakingService.getWeekList(data).then(function(res){
+					var arr = res.subjects;
+					arr.splice(3, arr.length - 3);
+					_this.weekList = arr;
+				})
+			},
+			getNewMovies() {
+				var data = {
+					'start': this.start,
+					'count': this.count
+				}
+				var _this = this;
+				movieRakingService.getCommingSonnList(data).then(function(res){
+					var arr = res.subjects;
+					arr.splice(3, arr.length - 3);
+					_this.commingSoonList = arr;
+				})
+			},
+			getBookingList() {
+				var data = {
+					'start': this.start,
+					'count': this.count
+				}
+				var _this = this;
+				movieRakingService.getBookingList(data).then(function(res){
+					var arr = res.subjects;
+					arr.splice(3, arr.length - 3);
+					_this.bookingOfficeList = arr;
+				})
+			},
 		},
 		created() {
 			this.getTopList();
+			this.getWeekly();
+			this.getNewMovies();
+			this.getBookingList();
+		},
+		components: {
+			swiper: swiper
 		}
 	}
 </script>
@@ -114,9 +164,9 @@
 	.rank-image {
 		list-style-type: none;
 		position: relative;
-		width: 7rem;
+		width: 9rem;
 		height: 6.5rem;
-		margin: 0px 2rem;
+		margin: 0px 0.5rem 0px 2rem;
 	}
 	.rank-image li {
 		display: inline-block;
@@ -124,15 +174,15 @@
 	}
 	.image-item0 {
 		left: 0px;
-		top: 0.3rem;
+		top: 0.4rem;
 	}
 	.image-item1 {
-		left: 2rem;
+		left: 3rem;
 		z-index: 9999;
 	}
 	.image-item2 {
 		right: 0px;
-		top: 0.3rem;
+		top: 0.4rem;
 	}
 	.rank-image-item0 {
 		width: 4rem;
