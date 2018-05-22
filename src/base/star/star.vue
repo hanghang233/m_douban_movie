@@ -1,7 +1,7 @@
 <template>
 	<div class="star" :class="starType">
 		<span v-for="item in starClasses" class="star-item" :class="item"></span>
-		<span v-if="needAverage">{{starTotal}}分</span>
+		<span class="average-font" v-if="needAverage">{{starTotal}}<span v-if="needRateTag">分</span></span>
 	</div>
 </template>
 
@@ -27,7 +27,11 @@
 			needAverage: {
 				type: Boolean,
 				default: true
-			}
+			},
+			needRateTag: {
+				type: Boolean,
+				default: true
+			},
 		},
 		computed: {
 			starType() {
@@ -95,5 +99,8 @@
 	}
 	.star-36 .off {
 		background-image: url('star36_off@2x.png');
+	}
+	.average-font {
+		font-size: 0.8rem
 	}
 </style>

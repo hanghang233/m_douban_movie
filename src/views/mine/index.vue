@@ -11,6 +11,9 @@
 						<li v-for="item in showList" ref="movieItem1">
 							<div>
 								<img :src="item.image" />
+								<span class="add-tag">+</span>
+								<p class="movie-title">{{item.title}}</p>
+								<star :star-total="item.rating" :need-rate-tag="false"></star>
 							</div>
 						</li>
 					</ul>
@@ -25,6 +28,7 @@
 	import movieListService from '@/service/movie-list.js' 
 	import { createMovieList } from '@/common/util/movieList.js'
 	import BSscroll from 'better-scroll'
+	import star from '@/base/star/star.vue'
 	var options = {
 		scrollY: false,
 		scrollX: true,
@@ -46,14 +50,15 @@
 			}
 		},
 		components: {
-			scroll: scroll
+			scroll: scroll,
+			star: star
 		},
 		methods: {
 			initItem1Scroll() {
 				var width = 0;
 				this.$nextTick(function(){
 					for(var i=0;i<this.showList.length;i++){
-						width += parseInt(this.$refs.movieItem1[i].clientWidth);
+						width += parseInt(this.$refs.movieItem1[i].clientWidth + 5);
 					}
 					this.$refs.movieItem1Content.style.width = width + 'px';
 					if(!this.movieItem1Scroll){
@@ -110,12 +115,36 @@
 		display: flex;
 		flex-wrap: wrap;
 		li {
-			width: 15%;
-			min-width: 15%;
-			min-height: 15%;
-			margin-right: 1rem;
+			width: 18%;
+			min-width: 18%;
+			min-height: 18%;
+			margin-right: 0.6rem;
+			margin-bottom: 0.6rem;
+			position: relative;
 			img {
 				width: 100%;
+				height: 10rem;
+			}
+			.add-tag {
+				position: absolute;
+				width: 2rem;
+				height: 2rem;
+				display: inline-block;
+				top: 0px;
+				left: 0px;
+				background: #cccccca3;
+				font-size: 1.5rem;
+				line-height: 2rem;
+				color: #fff;
+			}
+			.movie-title {
+				font-size: 0.8rem;
+				font-weight: 900;
+				width: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				margin: 0;
 			}
 		}
 	}
