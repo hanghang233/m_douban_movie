@@ -20,13 +20,11 @@
 			getImage(item) {
 				if(item.subject) {
 					var url = item.subject.images.small;
-					var _u = url.substring(7);
-					return 'https://images.weserv.nl/?url=' + _u;
 				}else if(item.images){
 					var url = item.images.small;
-					var _u = url.substring(7);
-					return 'https://images.weserv.nl/?url=' + _u;
 				}
+				var _u = url.substring(7);
+				return 'https://images.weserv.nl/?url=' + _u;
 			}
 		}
 	}

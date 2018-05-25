@@ -8,6 +8,7 @@ import Ranking from '@/views/ranking/index.vue'
 import commentAllList from '@/views/movie-detail/commentAllList.vue'
 import reviewsAllList from '@/views/movie-detail/reviewsAllList.vue'
 import Search from '@/views/search/index.vue'
+import Demo from '@/views/demo/index.vue'
 
 Router.prototype.openPage = function(link){
 	this.push(link);
@@ -23,7 +24,7 @@ Vue.use(Router)
 export default new Router({
 	routes: [{
 			path: '/',
-			component: MovieList,
+			redirect: '/movie',
 		},{
 			path: '/movie',
 			name: 'movie',
@@ -48,6 +49,10 @@ export default new Router({
 			path: '/search',
 			name: 'search',
 			component: Search
+		},{
+			path: '/demo',
+			name: 'demo',
+			component: Demo
 		}
 	]
 })

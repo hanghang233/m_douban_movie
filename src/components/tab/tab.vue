@@ -19,6 +19,12 @@
 				</span>
 				<span>我的</span>
 			</li>
+			<li @click="open('/demo', 3)" :class="{'active':isActive(3)}">
+				<span class="tab-icon">
+					<i class="icon-video-camera"></i>
+				</span>
+				<span>demo</span>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -40,11 +46,23 @@
 				return index == this.nowIndex
 			}
 		},
+		created() {
+			var path = this.$router.history.current.path;
+			if(path.indexOf('movie') > -1){
+				this.nowIndex = 0;
+				this.isActive(0);
+			}else if(path.indexOf('ranking') > -1){
+				this.nowIndex = 1;
+				this.isActive(1);
+			}else {
+				this.nowIndex = 2;
+				this.isActive(2);
+			}
+		}
 	}
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
-	@import "../../common/stylus/variable.styl"
+<style>
 	.tab-container {
 		height: 200px;
 	}
@@ -61,7 +79,8 @@
 		margin-top: 0px;
 		margin-bottom: 0px;
 		height: 200px;
-		background-color: #fff
+		background-color: #fff;
+		z-index: 9999;
 	}
 	.active {
 		color: #42bd56

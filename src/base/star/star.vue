@@ -2,6 +2,7 @@
 	<div class="star" :class="starType">
 		<span v-for="item in starClasses" class="star-item" :class="item"></span>
 		<span class="average-font" v-if="needAverage">{{starTotal}}<span v-if="needRateTag">分</span></span>
+		<span class="average-font text-gray" v-if="needWatched">{{watchedTotal}}人看过</span>
 	</div>
 </template>
 
@@ -32,6 +33,13 @@
 				type: Boolean,
 				default: true
 			},
+			needWatched: {
+				type: Boolean,
+				default: false
+			},
+			watchedTotal: {
+				type: Number,
+			}
 		},
 		computed: {
 			starType() {
@@ -102,5 +110,8 @@
 	}
 	.average-font {
 		font-size: 0.8rem
+	}
+	.text-gray {
+		color: #ccc;
 	}
 </style>

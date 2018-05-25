@@ -31,6 +31,9 @@ export default {
 			}
 			this.$router.isBack = !isBack;
 		}
+	},
+	created() {
+		console.log(this.loadFlag);
 	}
 }
 </script>
