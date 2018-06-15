@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<input v-demo="color" />
+		<input />
+		<p>{{color.text}}</p>
+		<p v-for="item in list" :key="item.id">{{item.id}}</p>
 		<button @click="change()">change</button>
 	</div>
 </template>
@@ -11,37 +13,28 @@
 			return {
 				color: {
 					text: '#ccc'
-				}
+				},
+				list: [{ 
+					'id': 1
+				},{ 
+					'id': 2
+				},{ 
+					'id': 3
+				},{ 
+					'id': 4
+				}]
 			}
 		},
 		methods: {
 			change() {
-				this.color.text = '#42bd56'
+				this.color.text = '#42bd56';
+				this.list.push({
+					id: 6
+				})
 			}
 		},
-		directives: {
-			demo : {
-				inserted: function(el){
-					console.log('inserted');
-				},
-				bind: function(el, binding, nodename){
-					console.log('el:' + el);
-					console.log('binding:' + binding.value.text);
-					console.log('nodename:' + nodename);
-					el.style = 'color: ' + binding.value.text
-				},
-				update: function(el, binding, nodename){ //自定义属性用在对象上，对象内部属性变化的时候触发update
-					console.log('update');
-					console.log('update color: ' + binding.value.text);
-					el.style = 'color: ' + binding.value.text
-				},
-				componentUpdated: function(){
-					console.log('componentUpdated');
-				},
-				unbind: function(el, binding, nodename){
-					console.log('unbind');
-				}
-			}
+		created() {
+			this.list[1].id = 55;
 		}
 	}
 </script>
