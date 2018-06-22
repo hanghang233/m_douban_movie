@@ -1,40 +1,35 @@
 <template>
 	<div>
-		<input />
-		<p>{{color.text}}</p>
-		<p v-for="item in list" :key="item.id">{{item.id}}</p>
-		<button @click="change()">change</button>
+		<slider :list="showList" :mark="1"></slider>
 	</div>
 </template>
 
 <script type="text/javascript">
-	export default  {
+	import slider from '@/common/util/slider'
+	import { createMovieList } from '@/common/util/movieList.js'
+	import movieListService from '@/service/movie-list.js' 
+	export default {
 		data() {
 			return {
-				color: {
-					text: '#ccc'
-				},
-				list: [{ 
-					'id': 1
-				},{ 
-					'id': 2
-				},{ 
-					'id': 3
-				},{ 
-					'id': 4
-				}]
+				showStartIndex: 1,
+				count: 5,
+				showList: [],
+				mark: 1
 			}
 		},
-		methods: {
-			change() {
-				this.color.text = '#42bd56';
-				this.list.push({
-					id: 6
-				})
-			}
+		components: {
+			slider: slider
 		},
 		created() {
-			this.list[1].id = 55;
+			var _this = this;
+			var data = {
+				'start': this.showStartIndex,
+				'count': this.count
+			}
+			movieListService.getMovieList(data).then(function(res){
+				_this.showList = createMovieList(res.subjects);
+				
+			})
 		}
 	}
 </script>

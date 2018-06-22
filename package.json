@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "better-scroll": "^1.9.1",
     "jquery": "^2.2.4",
+    "jsonp": "^0.2.1",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "lib-flexible": "^0.3.2",

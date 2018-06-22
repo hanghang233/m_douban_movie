@@ -1,11 +1,13 @@
 <template>
 	<div id="app">
-		<keep-alive exclude="search">
-			<transition :name="transitionName">
-				<router-view class="router" />
-			</transition>
-		</keep-alive>
-		<tab></tab>
+		<slot>
+			<keep-alive exclude="search">
+				<transition :name="transitionName">
+					<router-view class="router" />
+				</transition>
+			</keep-alive>
+			<tab></tab>
+		</slot>
 	</div>
 </template>
 

@@ -33,10 +33,11 @@ export function createMovieList(list) {
 }
 
 export function getDirector(arr){
-	return arr[0].name
+	return arr.length > 0 ? arr[0].name : ''
 }
 
 export function getImages(img){
+  //return img.small;
 	if(img.small){
 		let _u = img.small.substring( 7 );
         return 'https://images.weserv.nl/?url=' + _u;
