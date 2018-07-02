@@ -1,13 +1,19 @@
 <template>
 	<div>
-		<slider :list="showList" :mark="1"></slider>
+		<div v-if="showList.length > 0">
+			<slider>
+				<div v-for="item in showList">
+					<img :src="item.image" />
+				</div>
+			</slider> 
+		</div>
 	</div>
 </template>
 
 <script type="text/javascript">
-	import slider from '@/common/util/slider'
 	import { createMovieList } from '@/common/util/movieList.js'
 	import movieListService from '@/service/movie-list.js' 
+	import slider from '@/base/slider/slider'
 	export default {
 		data() {
 			return {
@@ -18,7 +24,7 @@
 			}
 		},
 		components: {
-			slider: slider
+			slider: slider,
 		},
 		created() {
 			var _this = this;

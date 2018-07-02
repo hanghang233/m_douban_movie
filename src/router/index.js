@@ -9,6 +9,7 @@ import commentAllList from '@/views/movie-detail/commentAllList.vue'
 import reviewsAllList from '@/views/movie-detail/reviewsAllList.vue'
 import Search from '@/views/search/index.vue'
 import Demo from '@/views/demo/index.vue'
+import Transition from '@/views/transition/transition.vue'
 
 Router.prototype.openPage = function(link){
 	this.push(link);
@@ -53,6 +54,10 @@ export default new Router({
 			path: '/demo',
 			name: 'demo',
 			component: Demo
+		},{
+			path: '/transition',
+			name: 'transition',
+			component: Transition
 		}
 	]
 })
